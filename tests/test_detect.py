@@ -113,3 +113,8 @@ def test_is_tty_false_when_isatty_raises_value_error(monkeypatch) -> None:
 def test_is_dumb_terminal_detects_prefixed_and_padded_values(monkeypatch) -> None:
     monkeypatch.setenv("TERM", " dumb-256color ")
     assert detect.is_dumb_terminal() is True
+
+
+def test_is_dumb_terminal_true_when_term_is_missing(monkeypatch) -> None:
+    monkeypatch.delenv("TERM", raising=False)
+    assert detect.is_dumb_terminal() is True
