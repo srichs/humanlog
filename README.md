@@ -94,6 +94,8 @@ Output:
 
 `humanlog` automatically detects where it’s running and adapts.
 
+Set `HUMANLOG_NO_ANIMATE=1` (or `NO_COLOR=1`) to force non-animated output.
+
 ## Zero configuration
 
 No handlers.  
