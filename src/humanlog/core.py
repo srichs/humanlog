@@ -3,7 +3,7 @@ from __future__ import annotations
 import sys
 import time
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from .detect import can_animate
 from .render import format_kv, timestamp
@@ -25,7 +25,7 @@ class _StepContext:
     def __enter__(self) -> "NiceLog":
         return self._logger
 
-    def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> bool:
+    def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> Literal[False]:
         self._logger.done()
         return False
 
@@ -40,7 +40,9 @@ class NiceLog:
         """Start a named step and return a context manager that auto-completes it."""
         self._end_step_if_any()
         animated = can_animate()
-        self._current_step = _Step(label=msg, start=time.perf_counter(), animated=animated)
+        self._current_step = _Step(
+            label=msg, start=time.perf_counter(), animated=animated
+        )
 
         if animated:
             print(f"→ {msg} …", end="", flush=True)
