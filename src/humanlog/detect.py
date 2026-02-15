@@ -22,7 +22,13 @@ _FALSEY_ENV_VALUES = {"", "0", "false", "no", "off"}
 
 
 def _is_enabled_env_flag(value: str | None) -> bool:
-    """Return True when an environment value should be treated as enabled."""
+    """Return True when an environment value should be treated as enabled.
+
+    Args:
+        value: Raw environment-variable string to interpret. ``None`` or common
+            false-like values (for example ``"0"`` or ``"false"``) are treated
+            as disabled.
+    """
     if value is None:
         return False
     return value.strip().lower() not in _FALSEY_ENV_VALUES
