@@ -1,7 +1,7 @@
 """humanlog: one-line progress + logging for humans."""
 
-from .core import NiceLog
+from .core import HumanLog
 
-__all__ = ["NiceLog", "log"]
+__all__ = ["HumanLog", "log"]
 
-log = NiceLog()
+log = HumanLog()

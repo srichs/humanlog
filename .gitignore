@@ -1,5 +1,7 @@
 .pytest_cache
 src/humanlog/__pycache__
+src/humanlog.egg-info
 tests/__pycache__
+docs/_build
 .venv
 dist

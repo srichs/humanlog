@@ -19,10 +19,10 @@ class _Step:
 class _StepContext:
     """Context manager that closes the active step on block exit."""
 
-    def __init__(self, logger: "NiceLog") -> None:
+    def __init__(self, logger: "HumanLog") -> None:
         self._logger = logger
 
-    def __enter__(self) -> "NiceLog":
+    def __enter__(self) -> "HumanLog":
         return self._logger
 
     def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> Literal[False]:
@@ -37,7 +37,7 @@ class _StepContext:
         return False
 
 
-class NiceLog:
+class HumanLog:
     """A tiny logger focused on clean, human-readable progress output."""
 
     def __init__(self) -> None:
