@@ -3,13 +3,14 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nicelog"
+name = "humanlog"
 version = "0.1.0"
 description = "One-line progress + logging for humans."
 readme = "README.md"
 requires-python = ">=3.9"
-authors = [{name = "nicelog"}]
+authors = [{name = "humanlog"}]
 license = {text = "MIT"}
 
 [tool.setuptools]
-packages = ["nicelog"]
+package-dir = {"" = "src"}
+packages = ["humanlog"]

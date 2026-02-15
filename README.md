@@ -1,10 +1,10 @@
-# nicelog
+# humanlog
 
 One-line logging + progress for humans.  
 Works in terminals, CI, and Jupyter — no setup, no configuration.
 
 ```python
-from nicelog import log
+from humanlog import log
 
 log.step("Downloading data")
 ...
@@ -14,7 +14,7 @@ log.info("Cleaning finished")
 log.warn("Missing values detected", cols=3)
 ```
 
-## Why nicelog?
+## Why humanlog?
 
 Most logging tools are either:
 
@@ -22,7 +22,7 @@ Most logging tools are either:
 - too heavy (structured logging frameworks),
 - or great at one thing (progress bars) but awkward for everything else.
 
-`nicelog` is opinionated and small:
+`humanlog` is opinionated and small:
 
 - readable output
 - automatic timing
@@ -34,7 +34,7 @@ It’s for applications, scripts, CLIs, and data workflows.
 ## Install
 
 ```bash
-pip install nicelog
+pip install humanlog
 ```
 
 Python 3.9+ (no dependencies).
@@ -92,7 +92,7 @@ Output:
 - No broken progress bars
 - Clean output cells
 
-`nicelog` automatically detects where it’s running and adapts.
+`humanlog` automatically detects where it’s running and adapts.
 
 ## Zero configuration
 
@@ -133,7 +133,7 @@ log.info("Loaded batch", batch=3, rows=1024)
 ## Example: a real script
 
 ```python
-from nicelog import log
+from humanlog import log
 
 log.step("Downloading data")
 download()
@@ -154,7 +154,7 @@ Readable. Intentional. Calm.
 
 ## Non-goals (by design)
 
-`nicelog` is not:
+`humanlog` is not:
 
 - a replacement for structured logging
 - a metrics system
@@ -163,7 +163,7 @@ Readable. Intentional. Calm.
 
 If you need JSON logs or OpenTelemetry, use those tools.
 
-If you want pleasant, readable output, use `nicelog`.
+If you want pleasant, readable output, use `humanlog`.
 
 ## Roadmap (likely, but optional)
 
@@ -176,7 +176,7 @@ The core will stay small.
 
 ## Philosophy
 
-`nicelog` optimizes for:
+`humanlog` optimizes for:
 
 - clarity over flexibility
 - defaults over configuration

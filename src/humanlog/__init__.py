@@ -1,4 +1,4 @@
-"""nicelog: one-line progress + logging for humans."""
+"""humanlog: one-line progress + logging for humans."""
 
 from .core import NiceLog
 
