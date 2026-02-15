@@ -39,7 +39,14 @@ def is_tty() -> bool:
     """Return True when stdout behaves like a TTY."""
     stream = getattr(sys, "stdout", None)
     isatty = getattr(stream, "isatty", None)
-    return bool(callable(isatty) and isatty())
+    if not callable(isatty):
+        return False
+
+    try:
+        return bool(isatty())
+    except OSError:
+        # Some stream wrappers can raise when the descriptor is unavailable.
+        return False
 
 
 def is_dumb_terminal() -> bool:

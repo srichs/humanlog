@@ -85,3 +85,17 @@ def test_is_animation_disabled_false_for_falsey_values(monkeypatch) -> None:
     monkeypatch.setenv("HUMANLOG_NO_ANIMATE", "false")
     monkeypatch.setenv("NO_COLOR", "0")
     assert detect.is_animation_disabled() is False
+
+
+def test_is_tty_false_when_stream_has_no_isatty(monkeypatch) -> None:
+    monkeypatch.setattr(detect.sys, "stdout", object())
+    assert detect.is_tty() is False
+
+
+def test_is_tty_false_when_isatty_raises_oserror(monkeypatch) -> None:
+    class BrokenStdout:
+        def isatty(self) -> bool:
+            raise OSError("closed")
+
+    monkeypatch.setattr(detect.sys, "stdout", BrokenStdout())
+    assert detect.is_tty() is False
