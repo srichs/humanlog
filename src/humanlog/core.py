@@ -16,14 +16,28 @@ class _Step:
     animated: bool
 
 
+class _StepContext:
+    """Context manager that closes the active step on block exit."""
+
+    def __init__(self, logger: "NiceLog") -> None:
+        self._logger = logger
+
+    def __enter__(self) -> "NiceLog":
+        return self._logger
+
+    def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> bool:
+        self._logger.done()
+        return False
+
+
 class NiceLog:
     """A tiny logger focused on clean, human-readable progress output."""
 
     def __init__(self) -> None:
         self._current_step: Optional[_Step] = None
 
-    def step(self, msg: str) -> None:
-        """Start a named step and render it immediately."""
+    def step(self, msg: str) -> _StepContext:
+        """Start a named step and return a context manager that auto-completes it."""
         self._end_step_if_any()
         animated = can_animate()
         self._current_step = _Step(label=msg, start=time.perf_counter(), animated=animated)
@@ -32,6 +46,8 @@ class NiceLog:
             print(f"→ {msg} …", end="", flush=True)
         else:
             print(f"[{timestamp()}] → {msg}")
+
+        return _StepContext(self)
 
     def done(self, **info: Any) -> None:
         """Finish the active step and render elapsed duration."""
