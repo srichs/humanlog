@@ -49,7 +49,9 @@ def is_dumb_terminal() -> bool:
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
     env = os.environ
-    return any(_is_enabled_env_flag(env.get(var)) for var in _ANIMATION_DISABLED_ENV_VARS)
+    return any(
+        _is_enabled_env_flag(env.get(var)) for var in _ANIMATION_DISABLED_ENV_VARS
+    )
 
 
 def can_animate() -> bool:
