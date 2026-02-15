@@ -54,3 +54,44 @@ def test_done_uses_render_mode_from_step_start(monkeypatch, capsys) -> None:
     logger.done()
 
     assert capsys.readouterr().out == "→ sync …\r✓ sync (time=1.20s)\n"
+
+
+def test_step_context_manager_auto_completes(monkeypatch, capsys) -> None:
+    logger = core.NiceLog()
+    times = iter([3.0, 4.0])
+
+    monkeypatch.setattr(core, "can_animate", lambda: False)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+    monkeypatch.setattr(core.time, "perf_counter", lambda: next(times))
+
+    with logger.step("build"):
+        pass
+
+    out = capsys.readouterr().out.strip().splitlines()
+    assert out == [
+        "[09:30:00] → build",
+        "[09:30:00] ✓ build (time=1.00s)",
+    ]
+
+
+def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> None:
+    logger = core.NiceLog()
+    times = iter([3.0, 3.5])
+
+    monkeypatch.setattr(core, "can_animate", lambda: False)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+    monkeypatch.setattr(core.time, "perf_counter", lambda: next(times))
+
+    try:
+        with logger.step("build"):
+            raise RuntimeError("boom")
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("RuntimeError should have been reraised")
+
+    out = capsys.readouterr().out.strip().splitlines()
+    assert out == [
+        "[09:30:00] → build",
+        "[09:30:00] ✓ build (time=0.50s)",
+    ]

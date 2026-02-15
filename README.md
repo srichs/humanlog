@@ -110,6 +110,13 @@ Just import and go.
 
 Start a timed step.
 
+You can also use it as a context manager to auto-complete the step:
+
+```python
+with log.step("Training model"):
+    train()
+```
+
 ### `log.done(**info)`
 
 Finish the current step and print timing + optional key/value info.
@@ -169,7 +176,6 @@ If you want pleasant, readable output, use `humanlog`.
 
 ## Roadmap (likely, but optional)
 
-- `with log.step("..."):` context manager
 - `log.track(iterable, label="Processing")`
 - optional Rich-powered rendering
 - stdlib logging bridge (opt-in)
