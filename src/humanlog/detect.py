@@ -32,10 +32,6 @@ def is_ci() -> bool:
     """Return True when running in a known CI environment."""
     env = os.environ
 
-    ci_value = env.get("CI")
-    if ci_value is not None and not _is_enabled_env_flag(ci_value):
-        return False
-
     return any(_is_enabled_env_flag(env.get(key)) for key in _CI_ENV_VARS)
 
 
