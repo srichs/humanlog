@@ -99,3 +99,17 @@ def test_is_tty_false_when_isatty_raises_oserror(monkeypatch) -> None:
 
     monkeypatch.setattr(detect.sys, "stdout", BrokenStdout())
     assert detect.is_tty() is False
+
+
+def test_is_tty_false_when_isatty_raises_value_error(monkeypatch) -> None:
+    class BrokenStdout:
+        def isatty(self) -> bool:
+            raise ValueError("closed")
+
+    monkeypatch.setattr(detect.sys, "stdout", BrokenStdout())
+    assert detect.is_tty() is False
+
+
+def test_is_dumb_terminal_detects_prefixed_and_padded_values(monkeypatch) -> None:
+    monkeypatch.setenv("TERM", " dumb-256color ")
+    assert detect.is_dumb_terminal() is True
