@@ -44,14 +44,15 @@ def is_tty() -> bool:
 
     try:
         return bool(isatty())
-    except OSError:
+    except (OSError, ValueError):
         # Some stream wrappers can raise when the descriptor is unavailable.
         return False
 
 
 def is_dumb_terminal() -> bool:
     """Return True when the current terminal does not support cursor control."""
-    return os.environ.get("TERM", "").lower() == "dumb"
+    term = os.environ.get("TERM", "").strip().lower()
+    return term == "dumb" or term.startswith("dumb-")
 
 
 def is_animation_disabled() -> bool:
