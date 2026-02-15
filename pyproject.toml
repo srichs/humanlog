@@ -14,3 +14,13 @@ license = {text = "MIT"}
 [tool.setuptools]
 package-dir = {"" = "src"}
 packages = ["humanlog"]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "sphinx>=7.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
