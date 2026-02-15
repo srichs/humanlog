@@ -29,7 +29,11 @@ class _StepContext:
         if exc_type is None:
             self._logger.done()
         else:
-            self._logger.fail(error=exc_type.__name__)
+            details = {"error": exc_type.__name__}
+            message = str(exc)
+            if message:
+                details["message"] = message
+            self._logger.fail(**details)
         return False
 
 

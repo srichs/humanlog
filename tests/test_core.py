@@ -93,7 +93,30 @@ def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> N
     out = capsys.readouterr().out.strip().splitlines()
     assert out == [
         "[09:30:00] → build",
-        "[09:30:00] ✖ build (error=RuntimeError, time=0.50s)",
+        "[09:30:00] ✖ build (error=RuntimeError, message=boom, time=0.50s)",
+    ]
+
+
+def test_step_context_manager_omits_empty_exception_message(monkeypatch, capsys) -> None:
+    logger = core.NiceLog()
+    times = iter([7.0, 8.0])
+
+    monkeypatch.setattr(core, "can_animate", lambda: False)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+    monkeypatch.setattr(core.time, "perf_counter", lambda: next(times))
+
+    try:
+        with logger.step("build"):
+            raise RuntimeError()
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("RuntimeError should have been reraised")
+
+    out = capsys.readouterr().out.strip().splitlines()
+    assert out == [
+        "[09:30:00] → build",
+        "[09:30:00] ✖ build (error=RuntimeError, time=1.00s)",
     ]
 
 
