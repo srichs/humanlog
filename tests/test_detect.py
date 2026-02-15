@@ -15,7 +15,15 @@ def test_is_ci_false_when_no_ci_vars(monkeypatch) -> None:
 def test_can_animate_depends_on_tty_and_ci(monkeypatch) -> None:
     monkeypatch.setattr(detect, "is_tty", lambda: True)
     monkeypatch.setattr(detect, "is_ci", lambda: False)
+    monkeypatch.setattr(detect, "is_dumb_terminal", lambda: False)
     assert detect.can_animate() is True
 
     monkeypatch.setattr(detect, "is_ci", lambda: True)
+    assert detect.can_animate() is False
+
+
+def test_can_animate_false_for_dumb_terminal(monkeypatch) -> None:
+    monkeypatch.setattr(detect, "is_tty", lambda: True)
+    monkeypatch.setattr(detect, "is_ci", lambda: False)
+    monkeypatch.setattr(detect, "is_dumb_terminal", lambda: True)
     assert detect.can_animate() is False

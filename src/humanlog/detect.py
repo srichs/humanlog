@@ -22,6 +22,11 @@ def is_tty() -> bool:
     return sys.stdout.isatty()
 
 
+def is_dumb_terminal() -> bool:
+    """Return True when the current terminal does not support cursor control."""
+    return os.environ.get("TERM", "").lower() == "dumb"
+
+
 def can_animate() -> bool:
     """Return True when single-line animation is safe and readable."""
-    return is_tty() and not is_ci()
+    return is_tty() and not is_ci() and not is_dumb_terminal()
