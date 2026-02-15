@@ -17,7 +17,8 @@ _CI_ENV_VARS = (
 
 def is_ci() -> bool:
     """Return True when running in a known CI environment."""
-    return any(key in os.environ for key in _CI_ENV_VARS)
+    env = os.environ
+    return any(key in env for key in _CI_ENV_VARS)
 
 
 def is_tty() -> bool:
@@ -35,7 +36,8 @@ def is_dumb_terminal() -> bool:
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
     disabled_vars = {"HUMANLOG_NO_ANIMATE", "NO_COLOR"}
-    return any(var in os.environ for var in disabled_vars)
+    env = os.environ
+    return any(var in env for var in disabled_vars)
 
 
 def can_animate() -> bool:
