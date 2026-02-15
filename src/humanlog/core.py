@@ -13,6 +13,7 @@ from .render import format_kv, timestamp
 class _Step:
     label: str
     start: float
+    animated: bool
 
 
 class NiceLog:
@@ -24,9 +25,10 @@ class NiceLog:
     def step(self, msg: str) -> None:
         """Start a named step and render it immediately."""
         self._end_step_if_any()
-        self._current_step = _Step(label=msg, start=time.perf_counter())
+        animated = can_animate()
+        self._current_step = _Step(label=msg, start=time.perf_counter(), animated=animated)
 
-        if can_animate():
+        if animated:
             print(f"→ {msg} …", end="", flush=True)
         else:
             print(f"[{timestamp()}] → {msg}")
@@ -38,12 +40,13 @@ class NiceLog:
 
         elapsed = time.perf_counter() - self._current_step.start
         label = self._current_step.label
+        animated = self._current_step.animated
         self._current_step = None
 
         details = {**info, "time": f"{elapsed:.2f}s"}
         suffix = format_kv(**details)
 
-        if can_animate():
+        if animated:
             print(f"\r✓ {label}{suffix}")
         else:
             print(f"[{timestamp()}] ✓ {label}{suffix}")

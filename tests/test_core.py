@@ -38,3 +38,19 @@ def test_done_without_step_is_noop(capsys) -> None:
     logger = core.NiceLog()
     logger.done()
     assert capsys.readouterr().out == ""
+
+
+def test_done_uses_render_mode_from_step_start(monkeypatch, capsys) -> None:
+    logger = core.NiceLog()
+    times = iter([5.0, 6.2])
+
+    monkeypatch.setattr(core.time, "perf_counter", lambda: next(times))
+    monkeypatch.setattr(core, "can_animate", lambda: True)
+
+    logger.step("sync")
+
+    monkeypatch.setattr(core, "can_animate", lambda: False)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+    logger.done()
+
+    assert capsys.readouterr().out == "→ sync …\r✓ sync (time=1.20s)\n"
