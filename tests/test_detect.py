@@ -20,6 +20,11 @@ def test_is_ci_false_when_no_ci_vars(monkeypatch) -> None:
     assert detect.is_ci() is False
 
 
+def test_is_ci_false_for_falsey_ci_value(monkeypatch) -> None:
+    monkeypatch.setenv("CI", "0")
+    assert detect.is_ci() is False
+
+
 def test_is_ci_when_other_supported_provider_var_present(monkeypatch) -> None:
     monkeypatch.setenv("CIRCLECI", "true")
     assert detect.is_ci() is True
@@ -59,3 +64,9 @@ def test_is_animation_disabled(monkeypatch) -> None:
 
     monkeypatch.setenv("NO_COLOR", "1")
     assert detect.is_animation_disabled() is True
+
+
+def test_is_animation_disabled_false_for_falsey_values(monkeypatch) -> None:
+    monkeypatch.setenv("HUMANLOG_NO_ANIMATE", "false")
+    monkeypatch.setenv("NO_COLOR", "0")
+    assert detect.is_animation_disabled() is False

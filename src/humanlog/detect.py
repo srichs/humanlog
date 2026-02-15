@@ -18,11 +18,20 @@ _ANIMATION_DISABLED_ENV_VARS = (
     "NO_COLOR",
 )
 
+_FALSEY_ENV_VALUES = {"", "0", "false", "no", "off"}
+
+
+def _is_enabled_env_flag(value: str | None) -> bool:
+    """Return True when an environment value should be treated as enabled."""
+    if value is None:
+        return False
+    return value.strip().lower() not in _FALSEY_ENV_VALUES
+
 
 def is_ci() -> bool:
     """Return True when running in a known CI environment."""
     env = os.environ
-    return any(key in env for key in _CI_ENV_VARS)
+    return any(_is_enabled_env_flag(env.get(key)) for key in _CI_ENV_VARS)
 
 
 def is_tty() -> bool:
@@ -40,7 +49,7 @@ def is_dumb_terminal() -> bool:
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
     env = os.environ
-    return any(var in env for var in _ANIMATION_DISABLED_ENV_VARS)
+    return any(_is_enabled_env_flag(env.get(var)) for var in _ANIMATION_DISABLED_ENV_VARS)
 
 
 def can_animate() -> bool:
