@@ -34,13 +34,7 @@ def is_dumb_terminal() -> bool:
 
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
-    return any(
-        key in os.environ
-        for key in (
-            "HUMANLOG_NO_ANIMATE",
-            "NO_COLOR",
-        )
-    )
+    return bool({"HUMANLOG_NO_ANIMATE", "NO_COLOR"} & set(os.environ))
 
 
 def can_animate() -> bool:
