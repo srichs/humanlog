@@ -54,7 +54,7 @@ class HumanLog:
         if animated:
             print(f"→ {msg} …", end="", flush=True)
         else:
-            print(f"[{timestamp()}] → {msg}")
+            print(f"[{timestamp()}] → {msg}", flush=True)
 
         return _StepContext(self)
 
@@ -79,24 +79,32 @@ class HumanLog:
         suffix = format_kv(**details)
 
         if animated:
-            print(f"\r{symbol} {label}{suffix}")
+            print(f"\r{symbol} {label}{suffix}", flush=True)
         else:
-            print(f"[{timestamp()}] {symbol} {label}{suffix}")
+            print(f"[{timestamp()}] {symbol} {label}{suffix}", flush=True)
 
     def info(self, msg: str, **info: Any) -> None:
         """Write an info message and auto-close any pending step."""
         self._end_step_if_any()
-        print(f"[{timestamp()}] ℹ {msg}{format_kv(**info)}")
+        print(f"[{timestamp()}] ℹ {msg}{format_kv(**info)}", flush=True)
 
     def warn(self, msg: str, **info: Any) -> None:
         """Write a warning message to stderr."""
         self._end_step_if_any()
-        print(f"[{timestamp()}] ⚠ {msg}{format_kv(**info)}", file=sys.stderr)
+        print(
+            f"[{timestamp()}] ⚠ {msg}{format_kv(**info)}",
+            file=sys.stderr,
+            flush=True,
+        )
 
     def error(self, msg: str, **info: Any) -> None:
         """Write an error message to stderr."""
         self._end_step_if_any()
-        print(f"[{timestamp()}] ✖ {msg}{format_kv(**info)}", file=sys.stderr)
+        print(
+            f"[{timestamp()}] ✖ {msg}{format_kv(**info)}",
+            file=sys.stderr,
+            flush=True,
+        )
 
     def _end_step_if_any(self) -> None:
         if self._current_step:

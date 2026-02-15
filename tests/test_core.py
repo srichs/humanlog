@@ -126,3 +126,37 @@ def test_fail_without_step_is_noop(capsys) -> None:
     logger = core.NiceLog()
     logger.fail()
     assert capsys.readouterr().out == ""
+
+
+def test_info_prints_with_flush(monkeypatch) -> None:
+    logger = core.NiceLog()
+    captured: dict[str, object] = {}
+
+    def fake_print(*args, **kwargs):  # type: ignore[no-untyped-def]
+        captured["args"] = args
+        captured["kwargs"] = kwargs
+
+    monkeypatch.setattr("builtins.print", fake_print)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+
+    logger.info("ready")
+
+    assert captured["args"] == ("[09:30:00] ℹ ready",)
+    assert captured["kwargs"] == {"flush": True}
+
+
+def test_warn_prints_with_flush_to_stderr(monkeypatch) -> None:
+    logger = core.NiceLog()
+    captured: dict[str, object] = {}
+
+    def fake_print(*args, **kwargs):  # type: ignore[no-untyped-def]
+        captured["args"] = args
+        captured["kwargs"] = kwargs
+
+    monkeypatch.setattr("builtins.print", fake_print)
+    monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
+
+    logger.warn("slow")
+
+    assert captured["args"] == ("[09:30:00] ⚠ slow",)
+    assert captured["kwargs"] == {"file": core.sys.stderr, "flush": True}
