@@ -184,6 +184,10 @@ The core will stay small.
 
 Logs are for people first.
 
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup and quality checks.
+
 ## License
 
 MIT
