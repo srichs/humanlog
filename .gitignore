@@ -1,0 +1,5 @@
+.pytest_cache
+src/humanlog/__pycache__
+tests/__pycache__
+.venv
+dist
