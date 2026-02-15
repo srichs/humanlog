@@ -97,7 +97,9 @@ def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> N
     ]
 
 
-def test_step_context_manager_omits_empty_exception_message(monkeypatch, capsys) -> None:
+def test_step_context_manager_omits_empty_exception_message(
+    monkeypatch, capsys
+) -> None:
     logger = core.NiceLog()
     times = iter([7.0, 8.0])
 
