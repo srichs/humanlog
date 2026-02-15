@@ -117,6 +117,12 @@ with log.step("Training model"):
     train()
 ```
 
+If an exception escapes the block, the step is automatically closed as failed:
+
+```text
+[12:40:05] ✖ Training model (error=RuntimeError, time=0.73s)
+```
+
 ### `log.done(**info)`
 
 Finish the current step and print timing + optional key/value info.

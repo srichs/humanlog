@@ -93,5 +93,11 @@ def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> N
     out = capsys.readouterr().out.strip().splitlines()
     assert out == [
         "[09:30:00] → build",
-        "[09:30:00] ✓ build (time=0.50s)",
+        "[09:30:00] ✖ build (error=RuntimeError, time=0.50s)",
     ]
+
+
+def test_fail_without_step_is_noop(capsys) -> None:
+    logger = core.NiceLog()
+    logger.fail()
+    assert capsys.readouterr().out == ""

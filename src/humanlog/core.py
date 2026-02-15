@@ -26,7 +26,10 @@ class _StepContext:
         return self._logger
 
     def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> Literal[False]:
-        self._logger.done()
+        if exc_type is None:
+            self._logger.done()
+        else:
+            self._logger.fail(error=exc_type.__name__)
         return False
 
 
@@ -53,6 +56,13 @@ class NiceLog:
 
     def done(self, **info: Any) -> None:
         """Finish the active step and render elapsed duration."""
+        self._complete_step(symbol="✓", **info)
+
+    def fail(self, **info: Any) -> None:
+        """Finish the active step as failed and render elapsed duration."""
+        self._complete_step(symbol="✖", **info)
+
+    def _complete_step(self, symbol: str, **info: Any) -> None:
         if not self._current_step:
             return
 
@@ -65,9 +75,9 @@ class NiceLog:
         suffix = format_kv(**details)
 
         if animated:
-            print(f"\r✓ {label}{suffix}")
+            print(f"\r{symbol} {label}{suffix}")
         else:
-            print(f"[{timestamp()}] ✓ {label}{suffix}")
+            print(f"[{timestamp()}] {symbol} {label}{suffix}")
 
     def info(self, msg: str, **info: Any) -> None:
         """Write an info message and auto-close any pending step."""
