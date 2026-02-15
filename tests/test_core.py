@@ -2,7 +2,7 @@ import humanlog.core as core
 
 
 def test_info_closes_active_step_and_prints_info(monkeypatch, capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     times = iter([10.0, 12.5])
 
     monkeypatch.setattr(core, "can_animate", lambda: False)
@@ -21,7 +21,7 @@ def test_info_closes_active_step_and_prints_info(monkeypatch, capsys) -> None:
 
 
 def test_warn_and_error_write_to_stderr(monkeypatch, capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     monkeypatch.setattr(core, "timestamp", lambda: "09:30:00")
 
     logger.warn("slow", retry=1)
@@ -35,13 +35,13 @@ def test_warn_and_error_write_to_stderr(monkeypatch, capsys) -> None:
 
 
 def test_done_without_step_is_noop(capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     logger.done()
     assert capsys.readouterr().out == ""
 
 
 def test_done_uses_render_mode_from_step_start(monkeypatch, capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     times = iter([5.0, 6.2])
 
     monkeypatch.setattr(core.time, "perf_counter", lambda: next(times))
@@ -57,7 +57,7 @@ def test_done_uses_render_mode_from_step_start(monkeypatch, capsys) -> None:
 
 
 def test_step_context_manager_auto_completes(monkeypatch, capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     times = iter([3.0, 4.0])
 
     monkeypatch.setattr(core, "can_animate", lambda: False)
@@ -75,7 +75,7 @@ def test_step_context_manager_auto_completes(monkeypatch, capsys) -> None:
 
 
 def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     times = iter([3.0, 3.5])
 
     monkeypatch.setattr(core, "can_animate", lambda: False)
@@ -100,7 +100,7 @@ def test_step_context_manager_closes_step_and_reraises(monkeypatch, capsys) -> N
 def test_step_context_manager_omits_empty_exception_message(
     monkeypatch, capsys
 ) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     times = iter([7.0, 8.0])
 
     monkeypatch.setattr(core, "can_animate", lambda: False)
@@ -123,13 +123,13 @@ def test_step_context_manager_omits_empty_exception_message(
 
 
 def test_fail_without_step_is_noop(capsys) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     logger.fail()
     assert capsys.readouterr().out == ""
 
 
 def test_info_prints_with_flush(monkeypatch) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     captured: dict[str, object] = {}
 
     def fake_print(*args, **kwargs):  # type: ignore[no-untyped-def]
@@ -146,7 +146,7 @@ def test_info_prints_with_flush(monkeypatch) -> None:
 
 
 def test_warn_prints_with_flush_to_stderr(monkeypatch) -> None:
-    logger = core.NiceLog()
+    logger = core.HumanLog()
     captured: dict[str, object] = {}
 
     def fake_print(*args, **kwargs):  # type: ignore[no-untyped-def]
