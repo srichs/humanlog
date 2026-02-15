@@ -8,7 +8,7 @@ from typing import Any
 def _format_value(value: Any) -> str:
     """Format metadata values with lightweight quoting for readability."""
     if isinstance(value, str):
-        if value == "" or any(ch in value for ch in " ,()"):
+        if value == "" or any(ch.isspace() or ch in ",()=" for ch in value):
             return json.dumps(value)
         return value
     return str(value)
