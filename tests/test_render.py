@@ -11,9 +11,13 @@ def test_format_kv_with_values() -> None:
 
 def test_format_kv_quotes_ambiguous_string_values() -> None:
     assert (
-        format_kv(path="/tmp/my file", detail="a,b", status="")
-        == ' (path="/tmp/my file", detail="a,b", status="")'
+        format_kv(path="/tmp/my file", detail="a,b", status="", expr="a=b")
+        == ' (path="/tmp/my file", detail="a,b", status="", expr="a=b")'
     )
+
+
+def test_format_kv_quotes_multiline_values() -> None:
+    assert format_kv(message="line 1\nline 2") == ' (message="line 1\\nline 2")'
 
 
 def test_timestamp_shape() -> None:
