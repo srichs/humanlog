@@ -30,6 +30,12 @@ def test_is_ci_when_other_supported_provider_var_present(monkeypatch) -> None:
     assert detect.is_ci() is True
 
 
+def test_is_ci_true_when_provider_var_present_even_if_ci_falsey(monkeypatch) -> None:
+    monkeypatch.setenv("CI", "0")
+    monkeypatch.setenv("GITHUB_ACTIONS", "1")
+    assert detect.is_ci() is True
+
+
 def test_can_animate_depends_on_tty_and_ci(monkeypatch) -> None:
     monkeypatch.setattr(detect, "is_tty", lambda: True)
     monkeypatch.setattr(detect, "is_ci", lambda: False)
