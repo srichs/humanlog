@@ -14,6 +14,8 @@ _CI_ENV_VARS = (
     "TF_BUILD",
 )
 
+_ANIMATION_DISABLED_ENV_VARS = ("HUMANLOG_NO_ANIMATE", "NO_COLOR")
+
 
 def is_ci() -> bool:
     """Return True when running in a known CI environment."""
@@ -35,9 +37,8 @@ def is_dumb_terminal() -> bool:
 
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
-    disabled_vars = {"HUMANLOG_NO_ANIMATE", "NO_COLOR"}
     env = os.environ
-    return any(var in env for var in disabled_vars)
+    return any(var in env for var in _ANIMATION_DISABLED_ENV_VARS)
 
 
 def can_animate() -> bool:
