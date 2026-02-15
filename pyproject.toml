@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nicelog"
+version = "0.1.0"
+description = "One-line progress + logging for humans."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "nicelog"}]
+license = {text = "MIT"}
+
+[tool.setuptools]
+packages = ["nicelog"]
