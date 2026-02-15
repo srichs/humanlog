@@ -4,17 +4,20 @@ import os
 import sys
 
 
+_CI_ENV_VARS = (
+    "CI",
+    "GITHUB_ACTIONS",
+    "GITLAB_CI",
+    "BUILDKITE",
+    "CIRCLECI",
+    "JENKINS_URL",
+    "TF_BUILD",
+)
+
+
 def is_ci() -> bool:
     """Return True when running in a known CI environment."""
-    return any(
-        key in os.environ
-        for key in (
-            "CI",
-            "GITHUB_ACTIONS",
-            "GITLAB_CI",
-            "BUILDKITE",
-        )
-    )
+    return any(key in os.environ for key in _CI_ENV_VARS)
 
 
 def is_tty() -> bool:

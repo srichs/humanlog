@@ -7,9 +7,22 @@ def test_is_ci_when_known_ci_var_present(monkeypatch) -> None:
 
 
 def test_is_ci_false_when_no_ci_vars(monkeypatch) -> None:
-    for key in ("CI", "GITHUB_ACTIONS", "GITLAB_CI", "BUILDKITE"):
+    for key in (
+        "CI",
+        "GITHUB_ACTIONS",
+        "GITLAB_CI",
+        "BUILDKITE",
+        "CIRCLECI",
+        "JENKINS_URL",
+        "TF_BUILD",
+    ):
         monkeypatch.delenv(key, raising=False)
     assert detect.is_ci() is False
+
+
+def test_is_ci_when_other_supported_provider_var_present(monkeypatch) -> None:
+    monkeypatch.setenv("CIRCLECI", "true")
+    assert detect.is_ci() is True
 
 
 def test_can_animate_depends_on_tty_and_ci(monkeypatch) -> None:
