@@ -52,7 +52,7 @@ def is_tty() -> bool:
 def is_dumb_terminal() -> bool:
     """Return True when the current terminal does not support cursor control."""
     term = os.environ.get("TERM", "").strip().lower()
-    return term == "dumb" or term.startswith("dumb-")
+    return term == "" or term == "dumb" or term.startswith("dumb-")
 
 
 def is_animation_disabled() -> bool:
