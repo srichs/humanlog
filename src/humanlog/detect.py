@@ -34,14 +34,17 @@ def is_dumb_terminal() -> bool:
 
 def is_animation_disabled() -> bool:
     """Return True when environment configuration explicitly disables animation."""
-    return bool({"HUMANLOG_NO_ANIMATE", "NO_COLOR"} & set(os.environ))
+    disabled_vars = {"HUMANLOG_NO_ANIMATE", "NO_COLOR"}
+    return any(var in os.environ for var in disabled_vars)
 
 
 def can_animate() -> bool:
     """Return True when single-line animation is safe and readable."""
-    return (
-        is_tty()
-        and not is_ci()
-        and not is_dumb_terminal()
-        and not is_animation_disabled()
+    return all(
+        (
+            is_tty(),
+            not is_ci(),
+            not is_dumb_terminal(),
+            not is_animation_disabled(),
+        )
     )
