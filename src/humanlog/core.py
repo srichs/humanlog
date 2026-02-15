@@ -17,7 +17,12 @@ class _Step:
 
 
 class _StepContext:
-    """Context manager that closes the active step on block exit."""
+    """Context manager that closes the active step on block exit.
+
+    Args:
+        logger: The :class:`HumanLog` instance that opened the current step and
+            should be finalized when the context exits.
+    """
 
     def __init__(self, logger: "HumanLog") -> None:
         self._logger = logger
@@ -44,7 +49,12 @@ class HumanLog:
         self._current_step: Optional[_Step] = None
 
     def step(self, msg: str) -> _StepContext:
-        """Start a named step and return a context manager that auto-completes it."""
+        """Start a named step and return a context manager that auto-completes it.
+
+        Args:
+            msg: Human-readable description for the unit of work being started.
+                The same label is reused when rendering completion output.
+        """
         self._end_step_if_any()
         animated = can_animate()
         self._current_step = _Step(
@@ -59,11 +69,21 @@ class HumanLog:
         return _StepContext(self)
 
     def done(self, **info: Any) -> None:
-        """Finish the active step and render elapsed duration."""
+        """Finish the active step and render elapsed duration.
+
+        Args:
+            **info: Optional metadata emitted as key/value pairs in the final
+                log line (for example ``items=10`` or ``path="out.txt"``).
+        """
         self._complete_step(symbol="✓", **info)
 
     def fail(self, **info: Any) -> None:
-        """Finish the active step as failed and render elapsed duration."""
+        """Finish the active step as failed and render elapsed duration.
+
+        Args:
+            **info: Optional metadata emitted as key/value pairs in the failure
+                log line to provide extra debugging context.
+        """
         self._complete_step(symbol="✖", **info)
 
     def _complete_step(self, symbol: str, **info: Any) -> None:
@@ -84,12 +104,22 @@ class HumanLog:
             print(f"[{timestamp()}] {symbol} {label}{suffix}", flush=True)
 
     def info(self, msg: str, **info: Any) -> None:
-        """Write an info message and auto-close any pending step."""
+        """Write an info message and auto-close any pending step.
+
+        Args:
+            msg: Main message text shown after the info symbol.
+            **info: Optional structured metadata rendered as key/value pairs.
+        """
         self._end_step_if_any()
         print(f"[{timestamp()}] ℹ {msg}{format_kv(**info)}", flush=True)
 
     def warn(self, msg: str, **info: Any) -> None:
-        """Write a warning message to stderr."""
+        """Write a warning message to stderr.
+
+        Args:
+            msg: Main warning text shown after the warning symbol.
+            **info: Optional structured metadata rendered as key/value pairs.
+        """
         self._end_step_if_any()
         print(
             f"[{timestamp()}] ⚠ {msg}{format_kv(**info)}",
@@ -98,7 +128,12 @@ class HumanLog:
         )
 
     def error(self, msg: str, **info: Any) -> None:
-        """Write an error message to stderr."""
+        """Write an error message to stderr.
+
+        Args:
+            msg: Main error text shown after the error symbol.
+            **info: Optional structured metadata rendered as key/value pairs.
+        """
         self._end_step_if_any()
         print(
             f"[{timestamp()}] ✖ {msg}{format_kv(**info)}",
