@@ -22,6 +22,15 @@ def test_is_ci_false_when_no_ci_vars(monkeypatch) -> None:
 
 def test_is_ci_false_for_falsey_ci_value(monkeypatch) -> None:
     monkeypatch.setenv("CI", "0")
+    for key in (
+        "GITHUB_ACTIONS",
+        "GITLAB_CI",
+        "BUILDKITE",
+        "CIRCLECI",
+        "JENKINS_URL",
+        "TF_BUILD",
+    ):
+        monkeypatch.delenv(key, raising=False)
     assert detect.is_ci() is False
 
 
