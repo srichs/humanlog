@@ -40,11 +40,9 @@ def is_animation_disabled() -> bool:
 
 def can_animate() -> bool:
     """Return True when single-line animation is safe and readable."""
-    return all(
-        (
-            is_tty(),
-            not is_ci(),
-            not is_dumb_terminal(),
-            not is_animation_disabled(),
-        )
+    return (
+        is_tty()
+        and not is_ci()
+        and not is_dumb_terminal()
+        and not is_animation_disabled()
     )
