@@ -19,7 +19,9 @@ def is_ci() -> bool:
 
 def is_tty() -> bool:
     """Return True when stdout behaves like a TTY."""
-    return sys.stdout.isatty()
+    stream = getattr(sys, "stdout", None)
+    isatty = getattr(stream, "isatty", None)
+    return bool(callable(isatty) and isatty())
 
 
 def is_dumb_terminal() -> bool:
@@ -27,6 +29,22 @@ def is_dumb_terminal() -> bool:
     return os.environ.get("TERM", "").lower() == "dumb"
 
 
+def is_animation_disabled() -> bool:
+    """Return True when environment configuration explicitly disables animation."""
+    return any(
+        key in os.environ
+        for key in (
+            "HUMANLOG_NO_ANIMATE",
+            "NO_COLOR",
+        )
+    )
+
+
 def can_animate() -> bool:
     """Return True when single-line animation is safe and readable."""
-    return is_tty() and not is_ci() and not is_dumb_terminal()
+    return (
+        is_tty()
+        and not is_ci()
+        and not is_dumb_terminal()
+        and not is_animation_disabled()
+    )

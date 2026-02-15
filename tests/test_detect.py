@@ -16,6 +16,7 @@ def test_can_animate_depends_on_tty_and_ci(monkeypatch) -> None:
     monkeypatch.setattr(detect, "is_tty", lambda: True)
     monkeypatch.setattr(detect, "is_ci", lambda: False)
     monkeypatch.setattr(detect, "is_dumb_terminal", lambda: False)
+    monkeypatch.setattr(detect, "is_animation_disabled", lambda: False)
     assert detect.can_animate() is True
 
     monkeypatch.setattr(detect, "is_ci", lambda: True)
@@ -26,4 +27,22 @@ def test_can_animate_false_for_dumb_terminal(monkeypatch) -> None:
     monkeypatch.setattr(detect, "is_tty", lambda: True)
     monkeypatch.setattr(detect, "is_ci", lambda: False)
     monkeypatch.setattr(detect, "is_dumb_terminal", lambda: True)
+    monkeypatch.setattr(detect, "is_animation_disabled", lambda: False)
     assert detect.can_animate() is False
+
+
+def test_can_animate_false_when_disabled_by_env(monkeypatch) -> None:
+    monkeypatch.setattr(detect, "is_tty", lambda: True)
+    monkeypatch.setattr(detect, "is_ci", lambda: False)
+    monkeypatch.setattr(detect, "is_dumb_terminal", lambda: False)
+    monkeypatch.setattr(detect, "is_animation_disabled", lambda: True)
+    assert detect.can_animate() is False
+
+
+def test_is_animation_disabled(monkeypatch) -> None:
+    monkeypatch.delenv("HUMANLOG_NO_ANIMATE", raising=False)
+    monkeypatch.delenv("NO_COLOR", raising=False)
+    assert detect.is_animation_disabled() is False
+
+    monkeypatch.setenv("NO_COLOR", "1")
+    assert detect.is_animation_disabled() is True
