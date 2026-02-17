@@ -12,6 +12,26 @@ authors = [
     {name = "srichs", email = "srichs@pm.me"},
 ]
 license = {text = "MIT"}
+keywords = ["logging", "cli", "progress", "terminal", "developer-tools"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+]
+
+[project.urls]
+Homepage = "https://github.com/srichs/humanlog"
+Repository = "https://github.com/srichs/humanlog"
+Issues = "https://github.com/srichs/humanlog/issues"
+Changelog = "https://github.com/srichs/humanlog/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

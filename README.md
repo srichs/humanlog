@@ -202,6 +202,14 @@ Logs are for people first.
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup and quality checks.
 
+## Changelog
+
+Release history is tracked in [CHANGELOG.md](CHANGELOG.md).
+
+## Releasing
+
+Maintainers can follow [RELEASE.md](RELEASE.md) for packaging, verification, and publish steps.
+
 ## License
 
 MIT
