@@ -1,5 +1,8 @@
 # humanlog
 
+[![CI](https://github.com/srichs/humanlog/actions/workflows/ci.yml/badge.svg)](https://github.com/srichs/humanlog/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/humanlog.svg)](https://pypi.org/project/humanlog/)
+
 One-line logging + progress for humans.  
 Works in terminals, CI, and Jupyter — no setup, no configuration.
 
