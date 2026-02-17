@@ -113,6 +113,9 @@ Just import and go.
 
 Start a timed step.
 
+If another step is already active, `humanlog` automatically finishes it first so
+you never end up with overlapping step state.
+
 You can also use it as a context manager to auto-complete the step:
 
 ```python
@@ -134,13 +137,21 @@ Finish the current step and print timing + optional key/value info.
 
 Print an informational message.
 
+If a step is active, it is automatically completed before the info line is
+printed.
+
 ### `log.warn(message: str, **info)`
 
 Print a warning (to stderr).
 
+If a step is active, it is automatically completed before the warning is
+printed.
+
 ### `log.error(message: str, **info)`
 
 Print an error (to stderr).
+
+If a step is active, it is automatically completed before the error is printed.
 
 Key/value info is always optional and rendered inline:
 
