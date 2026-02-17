@@ -31,3 +31,15 @@ pytest
 - Keep PRs focused and small.
 - Update docs (`README.md` / `docs/`) when API behavior changes.
 - Ensure checks pass before requesting review.
+
+## Release checklist
+
+For maintainers preparing a release:
+
+1. Update version metadata in `pyproject.toml`.
+2. Add the release entry to `CHANGELOG.md`.
+3. Run full checks (`ruff`, `black`, `mypy`, `pytest`, docs build).
+4. Build + validate artifacts (`python -m build`, `twine check dist/*`).
+5. Publish and tag the release.
+
+See [RELEASE.md](RELEASE.md) for the full command-by-command process.
